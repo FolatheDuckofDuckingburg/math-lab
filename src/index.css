@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .font-mono-math {
+    font-family: 'Fira Code', monospace;
+  }
+  
+  .font-serif-editorial {
+    font-family: 'Newsreader', 'EB Garamond', Georgia, Cambria, serif;
+  }
+
+  .font-math {
+    font-family: 'EB Garamond', 'Newsreader', 'Times New Roman', serif;
+  }
+}
+
+/* Warm paper background for landing page */
+.bg-warm-paper {
+  background-color: #faf7f2;
+}
+
+/* Dot grid for geometry canvas & landing background */
+.bg-dot-grid {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(45, 85, 104, 0.12) 1.2px, transparent 1.2px);
+}
+
+.bg-dot-grid-dark {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
+}
+
+/* Custom mathematical grid pattern */
+.bg-math-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.bg-math-grid-light {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
