@@ -27,6 +27,8 @@ import { DailyChallenge } from './components/DailyChallenge';
 import { LabNotebook } from './components/LabNotebook';
 import { AboutSection } from './components/AboutSection';
 import { StudentLearningHub } from './components/education/StudentLearningHub';
+import { CompletionCheckbox } from './components/common/CompletionCheckbox';
+import { CertificateModal } from './components/certificate/CertificateModal';
 import { 
   ArrowLeft, 
   ChevronRight, 
@@ -56,6 +58,10 @@ export const App: React.FC = () => {
   const [progress, setProgress] = useState<UserProgressMap>({});
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [utilityModal, setUtilityModal] = useState<'search' | 'support' | 'newsletter' | null>(null);
+  const [certificateModal, setCertificateModal] = useState<{ isOpen: boolean; labId: LabTab | 'all' }>({
+    isOpen: false,
+    labId: 'all',
+  });
 
   const explorationRef = useRef<HTMLDivElement | null>(null);
 
@@ -154,6 +160,7 @@ export const App: React.FC = () => {
         onOpenSearch={() => setUtilityModal('search')}
         onOpenSupport={() => setUtilityModal('support')}
         onOpenNewsletter={() => setUtilityModal('newsletter')}
+        onOpenCertificate={() => setCertificateModal({ isOpen: true, labId: 'all' })}
       />
 
       {/* 2. Bold Clean White Main Navigation Bar with Pill Action */}
@@ -238,8 +245,8 @@ export const App: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 w-full sm:w-auto">
-                      <div className="w-full sm:w-48 h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                    <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                      <div className="w-full sm:w-40 h-2.5 bg-slate-200 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-gradient-to-r from-[#0077c8] to-emerald-500 rounded-full transition-all duration-500" 
                           style={{ width: `${Math.max(summary.percentage, 4)}%` }}
@@ -248,6 +255,16 @@ export const App: React.FC = () => {
                       <span className="font-mono font-bold text-xs text-[#0077c8] shrink-0">
                         {summary.percentage}%
                       </span>
+                      {summary.completed > 0 && (
+                        <button
+                          onClick={() => setCertificateModal({ isOpen: true, labId: 'all' })}
+                          className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold rounded-xl transition flex items-center gap-1.5 shadow-2xs shrink-0"
+                          title="Generate official completion certificate"
+                        >
+                          <Award className="w-3.5 h-3.5 text-slate-950" />
+                          <span>Certificate ({summary.completed}/6)</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -345,34 +362,29 @@ export const App: React.FC = () => {
                       </div>
 
                       <div className="mt-6 pt-4 border-t border-slate-100 space-y-2">
-                        {user && (
-                          <div className="flex items-center justify-between text-xs pb-1">
-                            <span className="text-slate-400 text-[11px]">User Status</span>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleToggleComplete(lab.id);
-                              }}
-                              className={`px-2.5 py-1 rounded-md text-[11px] font-bold flex items-center gap-1 transition ${
-                                isCompleted
-                                  ? 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100'
-                                  : 'text-slate-600 bg-slate-100 hover:bg-slate-200'
-                              }`}
-                            >
-                              {isCompleted ? (
-                                <>
-                                  <CheckCircle className="w-3 h-3 text-emerald-600" />
-                                  <span>Completed ✓</span>
-                                </>
-                              ) : (
-                                <>
-                                  <CheckCircle2 className="w-3 h-3 text-slate-400" />
-                                  <span>Mark Done</span>
-                                </>
-                              )}
-                            </button>
-                          </div>
+                        <div className="flex items-center justify-between text-xs pb-1">
+                          <span className="text-slate-400 text-[11px] font-medium">Lab Status</span>
+                          <CompletionCheckbox
+                            isCompleted={isCompleted}
+                            onToggle={() => handleToggleComplete(lab.id)}
+                            size="compact"
+                            label="Mark Completed"
+                            completedLabel="Completed ✓"
+                          />
+                        </div>
+
+                        {isCompleted && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCertificateModal({ isOpen: true, labId: lab.id });
+                            }}
+                            className="w-full py-1.5 px-3 bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 border border-amber-300 text-amber-900 rounded-xl text-[11px] font-extrabold flex items-center justify-center gap-1.5 transition shadow-2xs active:scale-98"
+                          >
+                            <Award className="w-3.5 h-3.5 text-amber-700" />
+                            <span>Download Certificate</span>
+                          </button>
                         )}
 
                         <div className={`flex items-center justify-between text-xs font-extrabold ${
@@ -490,6 +502,7 @@ export const App: React.FC = () => {
             progress={progress}
             onToggleComplete={handleToggleComplete}
             onOpenLogin={() => setIsLoginModalOpen(true)}
+            onOpenCertificate={(labId) => setCertificateModal({ isOpen: true, labId })}
           />
         </main>
       ) : (
@@ -511,37 +524,26 @@ export const App: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Lab Completion Toggle inside the active lab */}
+              {/* Lab Completion & Certificate actions inside active lab */}
               {isLabView && (
                 <div className="flex items-center gap-2">
-                  {user ? (
+                  <CompletionCheckbox
+                    isCompleted={progress[currentTab]?.status === 'completed'}
+                    onToggle={() => handleToggleComplete(currentTab)}
+                    size="standard"
+                    label="Mark Lab Completed"
+                    completedLabel="Lab Completed ✓"
+                  />
+
+                  {progress[currentTab]?.status === 'completed' && (
                     <button
-                      onClick={() => handleToggleComplete(currentTab)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs ${
-                        progress[currentTab]?.status === 'completed'
-                          ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                          : 'bg-white border border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700'
-                      }`}
+                      type="button"
+                      onClick={() => setCertificateModal({ isOpen: true, labId: currentTab })}
+                      className="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 flex items-center gap-1.5 shadow-sm transition active:scale-95"
+                      title="Download official completion certificate"
                     >
-                      {progress[currentTab]?.status === 'completed' ? (
-                        <>
-                          <CheckCircle className="w-3.5 h-3.5" />
-                          <span>Lab Completed ✓</span>
-                          <RotateCcw className="w-3 h-3 opacity-60 ml-0.5" />
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Mark Lab as Completed</span>
-                        </>
-                      )}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setIsLoginModalOpen(true)}
-                      className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-[#0077c8] hover:bg-sky-50 transition"
-                    >
-                      Sign In to Save Progress
+                      <Award className="w-3.5 h-3.5 text-slate-950" />
+                      <span>Download Certificate</span>
                     </button>
                   )}
                 </div>
@@ -692,6 +694,15 @@ export const App: React.FC = () => {
           setUser(userData);
           setProgress(getStoredProgress(userData.email));
         }}
+      />
+
+      {/* 7. Official Math Lab Mastery Certificate Modal */}
+      <CertificateModal
+        isOpen={certificateModal.isOpen}
+        onClose={() => setCertificateModal((prev) => ({ ...prev, isOpen: false }))}
+        user={user}
+        initialLabId={certificateModal.labId}
+        completedLabIds={Object.keys(progress).filter((k) => progress[k as LabTab]?.status === 'completed') as LabTab[]}
       />
     </div>
   );
