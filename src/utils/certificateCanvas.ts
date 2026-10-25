@@ -322,7 +322,7 @@ export const renderCertificateToCanvas = (
   ctx.font = '12px "Plus Jakarta Sans", sans-serif';
   ctx.letterSpacing = '0.5px';
   ctx.fillText(
-    'Math Lab is an open-source educational non-profit initiative dedicated to tactile mathematical discovery. Verified via math-lab.org',
+    'Math Lab is an open-source educational non-profit initiative dedicated to tactile mathematical discovery.,
     width / 2,
     height - 75
   );
