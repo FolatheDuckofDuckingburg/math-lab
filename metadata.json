@@ -1,7 +1,0 @@
-{
-  "name": "Math Lab",
-  "description": "The official website and interactive mathematics exploration laboratory for Math Lab, featuring graphing tools, geometry visualizers, calculus simulations, matrix transformations, and formula reference guides.",
-  "capabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}
