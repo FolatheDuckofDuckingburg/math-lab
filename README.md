@@ -1,4 +1,5 @@
 # Math Lab
+[![Netlify Status](https://api.netlify.com/api/v1/badges/416f9be0-7c7e-4d4b-a3c2-fa9c705c45e2/deploy-status)](https://app.netlify.com/projects/mathlab-official/deploys)
 
 **Explore mathematics. Investigate questions. Learn together.**
 
