@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
   
   .font-mono-math {
@@ -13,9 +13,23 @@
     font-family: 'Newsreader', 'EB Garamond', Georgia, Cambria, serif;
   }
 
+  .font-display-bold {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.025em;
+  }
+
   .font-math {
     font-family: 'EB Garamond', 'Newsreader', 'Times New Roman', serif;
   }
+}
+
+/* Diagonal slice clip paths for hero section matching reference */
+.clip-diagonal-right {
+  clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.clip-triangle-accent {
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
 }
 
 /* Warm paper background for landing page */

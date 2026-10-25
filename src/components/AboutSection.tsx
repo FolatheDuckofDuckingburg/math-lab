@@ -14,16 +14,21 @@ export const AboutSection: React.FC = () => {
           />
         </div>
         <div>
-          <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-[#182029]">
-            About Math Lab
-          </h2>
-          <p className="font-serif-editorial italic text-base text-[#2d5868] mt-1">
-            The Official Visual Platform for Mathematical Research & Learning
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-[#182029]">
+              About Math Lab
+            </h2>
+            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-wide">
+              Educational Non-Profit
+            </span>
+          </div>
+          <p className="font-serif-editorial italic text-base text-[#2d5868]">
+            The Official Non-Profit Visual Platform for Mathematical Research & Learning
           </p>
         </div>
         <p className="text-sm text-[#475467] max-w-2xl mx-auto leading-relaxed">
-          Math Lab is dedicated to transforming abstract mathematical theory into intuitive, interactive visual simulations. 
-          By combining numerical computation with interactive graphical laboratories, students, educators, and researchers can test hypotheses, visualize transformations, and develop deeper geometric intuition.
+          Math Lab is an educational non-profit organization dedicated to transforming abstract mathematical theory into intuitive, interactive visual simulations. 
+          By combining numerical computation with tactile graphical laboratories, students, educators, and competition researchers can test hypotheses, visualize transformations, and develop deeper geometric intuition—100% free with zero paywalls.
         </p>
       </div>
 

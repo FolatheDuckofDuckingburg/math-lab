@@ -1,5 +1,7 @@
 export type LabTab = 
   | 'overview'
+  | 'laboratories'
+  | 'education'
   | 'graphing'
   | 'geometry'
   | 'calculus'
@@ -43,3 +45,16 @@ export interface NotebookEntry {
   timestamp: number;
   category: string;
 }
+
+export type LabProgressStatus = 'not_started' | 'in_progress' | 'completed';
+
+export interface LabProgressRecord {
+  labId: LabTab;
+  status: LabProgressStatus;
+  lastInteractedAt: number;
+  completedAt?: number;
+  interactionCount: number;
+}
+
+export type UserProgressMap = Record<string, LabProgressRecord>;
+
